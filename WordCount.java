@@ -94,7 +94,7 @@ public class WordCount {
         Configuration conf = new Configuration();
         // Configuration : 환경설정을 위한 클래스
 
-        Job job = new Job(conf, "WordCount");
+        Job job = Job.getInstance(conf, "WordCount");
         // Job : MapReduce의 Job
 
         // 작성한 WordCountClass를 job으로, MyMapper를 Mapper로, MyReducer를 Reducer로 설정
