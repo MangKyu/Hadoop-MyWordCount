@@ -1,3 +1,6 @@
+import java.awt.*;
+import java.util.*;
+
 import java.io.IOException;
 import java.util.StringTokenizer;
 import org.apache.hadoop.conf.Configuration;
@@ -12,9 +15,9 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
-public class WordCount {
+public class MyWordCount {
     public static class MyMapper
-            extends Mapper<IntWritable, Text, Text, IntWritable> {
+            extends Mapper<Object, Text, Text, IntWritable> {
         // Mapper를 상속받음 <입력의 KEY, 입력의 VALUE, 출력의 KEY, 출력의 VALUE>
 
         private final static IntWritable one = new IntWritable(1);
@@ -25,7 +28,7 @@ public class WordCount {
         // Map에 생성되면 Map이 호출될 때 마다(한 줄이 입력으로 올 때 마다)매번 객체생성. --> 미리 생성해둬서 성능 향상시킴
 
         @Override
-        public void map(IntWritable key, Text value, Context context)
+        public void map(Object key, Text value, Context context)
             // Text value : 한줄 단위로 들어오는 map 함수의 입력
             // Context : MyMapper에서 처리한 결과를 Hadoop으로 전달하기 위한 연결고리
 
@@ -36,7 +39,7 @@ public class WordCount {
             StringTokenizer st = new StringTokenizer(line);
             // StringTokenizer(String, 구분자)로 한 줄을 분리함
             // 구분자가 없는 경우에는 모든 공백을 기준으로 입력을 분리
-            // 공백을 기준으로 분리된 토큰이 st 변수안에 저장되어 있음
+            // 공백을 기준으로 분리된 토큰을이 st 변수안에 저장되어 있음
             // ex) line = hello hadoop world 라고 하면, st에는[hello, hadoop, world]가 들어가있고
             // st.nextToken()할때마다 토큰을 st에서 하나씩 꺼냄
 
@@ -78,7 +81,7 @@ public class WordCount {
             // 반복문 돌면서 IntWritable 하나씩 가져온다.
 
             sumWritable.set(sum);
-            // Java의 자료형에 저장된 단어의 총 개수를 Hadoop 자료형인 sumWritable에 저장
+            // Java의 자료혀에 저장된 단어의 총 개수를 Hadoop 자료형인 sumWritable에 저장
 
             // (단어, 총 개수)를 context에 저장하여 Hadoop으로 전달
             context.write(key, sumWritable);
@@ -95,7 +98,7 @@ public class WordCount {
         // Job : MapReduce의 Job
 
         // 작성한 WordCountClass를 job으로, MyMapper를 Mapper로, MyReducer를 Reducer로 설정
-        job.setJarByClass(WordCount.class);
+        job.setJarByClass(MyWordCount.class);
         job.setMapperClass(MyMapper.class);
         job.setReducerClass(MyReducer.class);
 
