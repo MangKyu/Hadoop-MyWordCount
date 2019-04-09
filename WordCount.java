@@ -14,7 +14,7 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
 public class WordCount {
     public static class MyMapper
-            extends Mapper<IntWritable, Text, Text, IntWritable> {
+            extends Mapper<Object, Text, Text, IntWritable> {
         // Mapper를 상속받음 <입력의 KEY, 입력의 VALUE, 출력의 KEY, 출력의 VALUE>
 
         private final static IntWritable one = new IntWritable(1);
@@ -25,7 +25,7 @@ public class WordCount {
         // Map에 생성되면 Map이 호출될 때 마다(한 줄이 입력으로 올 때 마다)매번 객체생성. --> 미리 생성해둬서 성능 향상시킴
 
         @Override
-        public void map(IntWritable key, Text value, Context context)
+        public void map(Object key, Text value, Context context)
             // Text value : 한줄 단위로 들어오는 map 함수의 입력
             // Context : MyMapper에서 처리한 결과를 Hadoop으로 전달하기 위한 연결고리
 
